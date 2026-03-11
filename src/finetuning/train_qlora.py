@@ -82,10 +82,11 @@ def train() -> None:
 
     # 4. Tải mô hình Qwen
     print(f"🧠 Đang tải mô hình gốc từ local: {local_model_dir}...")
+    device_map = os.getenv("DEVICE_MAP", "auto")
     model = AutoModelForCausalLM.from_pretrained(
         local_model_dir,
         quantization_config=bnb_config,
-        device_map="cuda",
+        device_map=device_map,
         dtype=compute_dtype,
         local_files_only=True,
         low_cpu_mem_usage=True,

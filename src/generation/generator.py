@@ -1,4 +1,5 @@
 import os
+import threading
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -6,6 +7,7 @@ load_dotenv()
 # Biến toàn cục để lưu model trong bộ nhớ, tránh tải lại nhiều lần
 tokenizer = None
 model = None
+_lock = threading.Lock()
 
 SYSTEM_PROMPT = """Bạn là một trợ lý AI phân tích tài liệu (giống NotebookLM). 
 Nhiệm vụ của bạn là trả lời câu hỏi dựa TRÊN NGỮ CẢNH được cung cấp.
@@ -26,35 +28,39 @@ def load_llm():
     if model is not None:
         return
 
-    import torch  # noqa: PLC0415
-    from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig  # noqa: PLC0415
-    from peft import PeftModel  # noqa: PLC0415
+    with _lock:
+        if model is not None:
+            return
 
-    print("🧠 Đang khởi động AI: Tải Qwen kết hợp Adapter...")
-    base_model_id = os.getenv("GENERATOR_MODEL", "Qwen/Qwen2.5-3B-Instruct")
-    
-    # Đảm bảo bạn đã bỏ thư mục qwen-notebooklm vào models/adapters/
-    adapter_path = "models/adapters/qwen-notebooklm"
+        import torch  # noqa: PLC0415
+        from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig  # noqa: PLC0415
+        from peft import PeftModel  # noqa: PLC0415
 
-    tokenizer = AutoTokenizer.from_pretrained(base_model_id, trust_remote_code=True)
-    
-    # Nén 4-bit để chạy nhẹ nhàng trên máy bạn
-    bnb_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.float16,
-    )
+        print("🧠 Đang khởi động AI: Tải Qwen kết hợp Adapter...")
+        base_model_id = os.getenv("GENERATOR_MODEL", "Qwen/Qwen2.5-3B-Instruct")
+        
+        # Đảm bảo bạn đã bỏ thư mục qwen-notebooklm vào models/adapters/
+        adapter_path = "models/adapters/qwen-notebooklm"
 
-    base_model = AutoModelForCausalLM.from_pretrained(
-        base_model_id,
-        quantization_config=bnb_config,
-        device_map="auto",
-        trust_remote_code=True
-    )
-    
-    # Gắn Adapter (Kinh nghiệm Fine-tune) vào mô hình gốc
-    model = PeftModel.from_pretrained(base_model, adapter_path)
-    print("✅ AI đã sẵn sàng nhận lệnh!")
+        tokenizer = AutoTokenizer.from_pretrained(base_model_id, trust_remote_code=True)
+        
+        # Nén 4-bit để chạy nhẹ nhàng trên máy bạn
+        bnb_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=torch.float16,
+        )
+
+        base_model = AutoModelForCausalLM.from_pretrained(
+            base_model_id,
+            quantization_config=bnb_config,
+            device_map="auto",
+            trust_remote_code=True
+        )
+        
+        # Gắn Adapter (Kinh nghiệm Fine-tune) vào mô hình gốc
+        model = PeftModel.from_pretrained(base_model, adapter_path)
+        print("✅ AI đã sẵn sàng nhận lệnh!")
 
 def generate_json_response(user_prompt: str) -> str:
     """Gửi Prompt cho AI và nhận về chuỗi JSON"""

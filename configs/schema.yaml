@@ -1,0 +1,5 @@
+answer_schema: schemas/answer_schema.json
+citation_schema: schemas/citation_schema.json
+chunk_schema: schemas/chunk_schema.json
+document_schema: schemas/document_schema.json
+training_sample_schema: schemas/training_sample_schema.json

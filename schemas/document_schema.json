@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["doc_id", "source_path", "title"],
+  "properties": {
+    "doc_id": {"type": "string"},
+    "source_path": {"type": "string"},
+    "title": {"type": "string"},
+    "pages": {"type": "integer", "minimum": 1},
+    "metadata": {"type": "object"}
+  }
+}

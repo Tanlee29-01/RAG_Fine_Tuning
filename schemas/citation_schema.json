@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["doc_id", "chunk_id"],
+  "properties": {
+    "doc_id": {"type": "string"},
+    "chunk_id": {"type": "string"},
+    "page": {"type": "integer", "minimum": 1},
+    "score": {"type": "number"}
+  }
+}

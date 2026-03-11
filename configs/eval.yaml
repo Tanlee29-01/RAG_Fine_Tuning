@@ -1,0 +1,7 @@
+retrieval:
+  recall_at_k: [1, 3, 5, 10]
+  mrr_at_k: 10
+generation:
+  judge_model: gpt-4.1-mini
+schema:
+  strict: true

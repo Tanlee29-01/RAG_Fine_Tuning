@@ -1,0 +1,5 @@
+embedding_model: sentence-transformers/all-MiniLM-L6-v2
+generator_model: {{ base_model }}
+quantization: 4bit
+adapter_path: models/adapters
+merged_model_path: models/merged

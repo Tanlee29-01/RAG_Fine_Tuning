@@ -1,0 +1,7 @@
+app:
+  name: {{ project_slug }}
+  env: ${APP_ENV:dev}
+  log_level: ${LOG_LEVEL:INFO}
+api:
+  host: 0.0.0.0
+  port: 8000

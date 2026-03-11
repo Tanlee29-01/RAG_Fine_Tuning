@@ -1,0 +1,11 @@
+services:
+  api:
+    image: python:{{ python_version }}-slim
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: bash -lc "pip install -r requirements.txt && uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload"
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env

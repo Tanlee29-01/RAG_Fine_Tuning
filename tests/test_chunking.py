@@ -1,4 +1,4 @@
-from src.indexing.chunker import chunk_text
+from src.chunking.chunker import chunk_text
 
 
 def test_chunk_text_returns_chunks():

@@ -3,12 +3,12 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "{{ project_slug }}"
+name = "rag-fine-tuning"
 version = "0.1.0"
-description = "AI + RAG + Finetuning project scaffold"
+description = "Production-oriented RAG + Fine-tuning project"
 readme = "README.md"
-requires-python = ">={{ python_version }}"
-authors = [{ name = "{{ author_name }}" }]
+requires-python = ">=3.10"
+authors = [{ name = "RAG Fine-Tuning Contributors" }]
 dependencies = []
 
 [tool.pytest.ini_options]

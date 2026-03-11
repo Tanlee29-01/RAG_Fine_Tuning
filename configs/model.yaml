@@ -1,5 +1,5 @@
 embedding_model: sentence-transformers/all-MiniLM-L6-v2
-generator_model: {{ base_model }}
+generator_model: Qwen/Qwen2.5-3B-Instruct
 quantization: 4bit
 adapter_path: models/adapters
 merged_model_path: models/merged

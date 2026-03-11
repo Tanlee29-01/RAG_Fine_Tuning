@@ -1,5 +1,5 @@
 app:
-  name: {{ project_slug }}
+  name: rag-fine-tuning
   env: ${APP_ENV:dev}
   log_level: ${LOG_LEVEL:INFO}
 api:

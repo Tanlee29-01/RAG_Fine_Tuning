@@ -12,19 +12,11 @@ from transformers import (
 from peft import LoraConfig, prepare_model_for_kbit_training
 from trl import SFTTrainer
 
-os.environ.setdefault("HF_HOME", r"D:\HuggingFace_Cache")
-os.environ.setdefault("HF_HUB_CACHE", r"D:\HuggingFace_Cache\hub")
-os.environ.setdefault("TRANSFORMERS_CACHE", r"D:\HuggingFace_Cache\transformers")
-
-# Tăng tốc load shard
-os.environ.setdefault("HF_ENABLE_PARALLEL_LOADING", "true")
-os.environ.setdefault("HF_PARALLEL_LOADING_WORKERS", "12")  # thử 4/8/12 tùy CPU
-
-# Load biến môi trường
+# Load environment variables first so they can override defaults
 load_dotenv()
 
-DEFAULT_MODEL_ID = "Qwen/Qwen3.5-4B"
-DEFAULT_LOCAL_MODEL_DIR = r"D:\models\Qwen3.5-4B"
+DEFAULT_MODEL_ID = "Qwen/Qwen2.5-3B-Instruct"
+DEFAULT_LOCAL_MODEL_DIR = os.path.join(os.path.expanduser("~"), ".cache", "huggingface", "models", "Qwen2.5-3B-Instruct")
 
 def ensure_local_model(local_model_dir: str, model_id: str) -> str:
     """Ưu tiên model local. Chỉ tải từ HF khi bật ALLOW_HF_DOWNLOAD=1."""

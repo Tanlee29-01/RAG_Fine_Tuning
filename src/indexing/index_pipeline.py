@@ -2,22 +2,21 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Import các công cụ "phép thuật" từ LangChain
-from langchain_community.document_loaders import PyMuPDFLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.vectorstores import FAISS
-
 from src.ingestion.pdf_loader import load_pdfs
 
 # Load cấu hình từ file .env (chứa tên mô hình embedding)
 load_dotenv()
 
 def run_index_pipeline() -> None:
+    from langchain_community.document_loaders import PyMuPDFLoader  # noqa: PLC0415
+    from langchain_text_splitters import RecursiveCharacterTextSplitter  # noqa: PLC0415
+    from langchain_huggingface import HuggingFaceEmbeddings  # noqa: PLC0415
+    from langchain_community.vectorstores import FAISS  # noqa: PLC0415
+
     print("🚀 Bắt đầu xây dựng Cơ sở dữ liệu Vector (Bộ não tìm kiếm)...")
     
     input_dir = Path("data/raw")
-    db_dir = Path("data/vector_db") # Thư mục lưu não bộ
+    db_dir = Path("data/vector_db")
     
     # 1. Quét tìm tài liệu PDF
     pdf_files = load_pdfs(str(input_dir))
@@ -29,7 +28,6 @@ def run_index_pipeline() -> None:
     documents = []
     for pdf in pdf_files:
         print(f"📄 Đang đọc file: {pdf.name}")
-        # Dùng PyMuPDFLoader của LangChain cho nhanh gọn và giữ được số trang
         loader = PyMuPDFLoader(str(pdf))
         docs = loader.load()
         documents.extend(docs)

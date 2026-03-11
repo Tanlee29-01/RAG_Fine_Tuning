@@ -1,4 +1,4 @@
-from src.llm.response_validator import validate_response
+from src.generation.response_validator import validate_response
 
 
 def test_validate_response():

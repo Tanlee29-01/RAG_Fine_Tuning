@@ -1,7 +1,4 @@
 import os
-import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
-from peft import PeftModel
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -29,11 +26,15 @@ def load_llm():
     if model is not None:
         return
 
+    import torch  # noqa: PLC0415
+    from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig  # noqa: PLC0415
+    from peft import PeftModel  # noqa: PLC0415
+
     print("🧠 Đang khởi động AI: Tải Qwen kết hợp Adapter...")
     base_model_id = os.getenv("GENERATOR_MODEL", "Qwen/Qwen2.5-3B-Instruct")
     
     # Đảm bảo bạn đã bỏ thư mục qwen-notebooklm vào models/adapters/
-    adapter_path = "models/adapters/qwen-notebooklm" 
+    adapter_path = "models/adapters/qwen-notebooklm"
 
     tokenizer = AutoTokenizer.from_pretrained(base_model_id, trust_remote_code=True)
     

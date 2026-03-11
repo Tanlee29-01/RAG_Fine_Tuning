@@ -6,6 +6,4 @@ def build_context(chunks: list[dict], max_chars: int = 12000) -> str:
             break
         parts.append(text)
         total += len(text)
-    return "
-
-".join(parts)
+    return "\n\n".join(parts)
